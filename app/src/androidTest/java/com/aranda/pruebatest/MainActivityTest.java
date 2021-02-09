@@ -3,6 +3,7 @@ package com.aranda.pruebatest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 import android.view.accessibility.AccessibilityWindowInfo;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -54,7 +55,7 @@ public class MainActivityTest {
     }
 
     @Test
-    public void checkNombre() throws UiObjectNotFoundException {
+    public void checkName() throws UiObjectNotFoundException {
         UiObject txtNombre = device.findObject(new UiSelector().resourceId("com.aranda.pruebatest:id/txtName"));
         Assert.assertTrue(txtNombre.exists());
 
@@ -62,25 +63,31 @@ public class MainActivityTest {
     }
 
     @Test
-    public void checkApellido() throws UiObjectNotFoundException {
+    public void checkLastName() throws UiObjectNotFoundException {
+        if (isKeyboardOpened()) {
+            device.pressBack();
+        }
         UiObject txtApellido = device.findObject(new UiSelector().resourceId("com.aranda.pruebatest:id/txtApel"));
+        txtApellido.clickAndWaitForNewWindow();
         Assert.assertTrue(txtApellido.exists());
-
         txtApellido.setText("Perez");
     }
 
     @Test
-    public void checkCorreElectronico() throws UiObjectNotFoundException {
-        UiObject txtControl = device.findObject(new UiSelector().resourceId("com.aranda.pruebatest:id/txtEmail"));
-        Assert.assertTrue(txtControl.exists());
+    public void checkEmail() throws UiObjectNotFoundException {
         if (isKeyboardOpened()) {
             device.pressBack();
         }
+        UiObject txtControl = device.findObject(new UiSelector().resourceId("com.aranda.pruebatest:id/txtEmail"));
+        UiScrollable appView = new UiScrollable(new UiSelector().scrollable(true));
+        appView.scrollIntoView(new UiSelector().resourceId("com.aranda.pruebatest:id/txtEmail"));
+        Assert.assertTrue(txtControl.exists());
+        txtControl.click();
         txtControl.setText("juanita.perez@arandasoft.com");
     }
 
     @Test
-    public void checkGenero() throws UiObjectNotFoundException {
+    public void checkGender() throws UiObjectNotFoundException {
         if (isKeyboardOpened()) {
             device.pressBack();
         }
@@ -101,13 +108,6 @@ public class MainActivityTest {
         opcionMasculino.click();*/
     }
 
-    @Test
-    public void checkFormulario() throws UiObjectNotFoundException {
-        checkNombre();
-        checkApellido();
-        checkCorreElectronico();
-        checkGenero();
-    }
 
 /*
 
